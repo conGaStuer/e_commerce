@@ -1,5 +1,13 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
-  </div>
+  <div class="about"><HomeView /></div>
 </template>
+<script>
+import HomeView from "@/views/HomeView.vue";
+
+export default {
+  name: "AboutView",
+  components: {
+    HomeView,
+  },
+};
+</script>
