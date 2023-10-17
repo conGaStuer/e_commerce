@@ -1,13 +1,19 @@
 <template>
-  <div class="about"><HomeView /></div>
+  <div></div>
 </template>
+
 <script>
-import HomeView from "@/views/HomeView.vue";
+import { ref } from "vue";
+import { useRoute } from "vue-router";
 
 export default {
-  name: "CartView",
-  components: {
-    HomeView,
+  props: {
+    cart: {
+      type: Object,
+    },
+  },
+  setup(props) {
+    console.log(props);
   },
 };
 </script>

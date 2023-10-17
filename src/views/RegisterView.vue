@@ -4,13 +4,13 @@
       <div class="login-side--component">
         <div class="login-section login-image"></div>
         <div class="login-section login-form">
-          <form @submit.prevent="Login" class="forms">
+          <form @submit.prevent="Register" class="forms">
             <div class="hello">
               <p class="text-1">Hello !</p>
               <p class="text-2">Good <span>morning</span></p>
             </div>
             <div class="form">
-              <p class="text">Login</p>
+              <p class="text">Register</p>
 
               <div class="input">
                 <input
@@ -33,10 +33,9 @@
                 </div>
                 <p class="forgot">Forgot Password ?</p>
               </div>
-              <input class="submit" type="submit" value="Submit" />
-
-              <router-link class="create" to="/register"
-                >Create Account</router-link
+              <input type="submit" class="submit" value="Register" />
+              <router-link class="create" to="/login"
+                >Have an Account ?</router-link
               >
             </div>
           </form>
@@ -50,22 +49,23 @@ import { ref } from "vue";
 import "firebase/compat/auth";
 import firebase from "firebase/compat/app";
 export default {
-  name: "LoginView",
+  name: "RegisterView",
   setup() {
     const email = ref("");
     const password = ref("");
-    const Login = () => {
+    const Register = () => {
       firebase
         .auth()
-        .signInWithEmailAndPassword(email.value, password.value)
-        .then((data) => console.log(data))
+        .createUserWithEmailAndPassword(email.value, password.value)
+        .then((user) => {
+          alert(user);
+        })
         .catch((err) => alert(err.message));
     };
-
     return {
-      Login,
       email,
       password,
+      Register,
     };
   },
 };

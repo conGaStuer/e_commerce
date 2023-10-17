@@ -2,35 +2,45 @@
   <nav>
     <div class="container">
       <div class="label">
-        <span class="text1">Hae</span>
-        <span class="text2">rin's</span>
+        <router-link to="/" class="component text1">Hae</router-link>
+        <router-link to="/" class="component text2">rin's</router-link>
       </div>
       <input
         type="text"
         name=""
         id=""
-        placeholder="Search for clothings , watch..."
+        placeholder="Search for table , chair..."
         class="search"
+        v-model="search"
+        v-on:keydown="filtSearch"
       />
+
       <div class="nav-bar">
         <router-link to="/" class="component">Home</router-link>
-        <router-link to="/about" class="component">About</router-link>
+        <router-link to="/product" class="component">Product</router-link>
         <router-link to="/contact" class="component">Contact</router-link>
         <router-link to="/collection" class="component">Collection</router-link>
       </div>
-      <router-link to="/cart" class="component">
-        <i class="fa fa-shopping-cart cart"></i>
-      </router-link>
 
-      <!-- <button class="login" @click="handleLogin" v-if="isLogin"> -->
-      <button class="login">
+      <div to="/cart" class="component cart-view" @click="navigate('cart')">
+        <i class="fa fa-shopping-cart"></i>
+        <span class="cart_length">{{ cart.length }}</span>
+      </div>
+
+      <!-- <button class="login" @click="handleLogin"> -->
+      <button class="login" v-if="isLogin">
         <router-link to="/login" class="login-router"
           >Login / Sign up</router-link
         >
       </button>
+      <div class="log-out" v-else>
+        <span>Welcome, {{ names }}</span>
+        <button @click="Logout" class="login logout">Log out</button>
+      </div>
     </div>
   </nav>
-  <div class="introduce">
+
+  <div class="introduce" v-if="page === 'product'">
     <div class="introduce-text">
       <div class="intro-text--1">Why Haerin's</div>
       <div class="intro-text--2">
@@ -39,8 +49,20 @@
       </div>
       <button class="intro-text--3">Explore our Packages</button>
     </div>
+
+    <div class="search-container" v-if="isSearch">
+      <div v-for="test in filteredItems" :key="test.id" class="search-contents">
+        <div class="search-content">
+          <router-link
+            :to="{ name: 'ProductDetails', params: { id: test.id } }"
+            class="search-link"
+            >{{ test.name }}
+          </router-link>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="service-container">
+  <div class="service-container" v-motion-fade v-if="page === 'product'">
     <div class="service">
       <div class="service-item">
         <div class="service-item--content service-item--logo">
@@ -76,14 +98,13 @@
       </div>
     </div>
   </div>
-
-  <!-- =>>>>>>>>>>>>>> Rating of users
-  <vueper-slides fractions progress>
-    <vueper-slide v-for="i in 10" :key="i" :title="i.toString()" />
-  </vueper-slides> -->
-  <div class="list-container">
+  <div class="component viewproduct" @click="navigate('product')" v-if="isView">
+    <i class="fa-solid fa-angle-left"></i>Back to Home page
+  </div>
+  <div class="list-container" v-motion-fade v-if="page === 'product'">
     <div class="list-items">
       <p>Best Selling Packages</p>
+
       <vueper-slides
         class="no-shadow nani1"
         :visible-slides="4"
@@ -97,40 +118,50 @@
       >
         <vueper-slide v-for="(itemm, i) in item" :key="i">
           <template #content>
-            <div class="items-container">
-              <div
-                class="items-content items-image"
-                :style="{ backgroundImage: `url(${itemm.image_link})` }"
-              >
-                <div class="discount">
-                  <span>{{ itemm.discount }}</span>
-                </div>
-              </div>
-              <div class="items-content items-info">
-                <div class="items-infor">
-                  <div class="items-information items-name">
-                    {{ itemm.name }}
-                  </div>
-                  <div class="items-information items-icon">
-                    <i class="fa-solid fa-bed"></i>
-                    <i class="fa-solid fa-chair"></i>
-                    <i class="fa-solid fa-couch"></i>
-                  </div>
-                  <div class="items-information items-rating">
-                    Rating: {{ itemm.rating }} <i class="fa-solid fa-star"></i>
-                  </div>
-                  <div class="items-information items-price">
-                    {{ itemm.price }}/month
+            <router-link
+              :to="{
+                name: 'ProductDetails',
+                params: { id: itemm.id },
+              }"
+              class="component product"
+            >
+              <div class="items-container">
+                <div
+                  class="items-content items-image"
+                  :style="{ backgroundImage: `url(${itemm.image_link})` }"
+                >
+                  <div class="discount">
+                    <span>{{ itemm.discount }}</span>
                   </div>
                 </div>
+                <div class="items-content items-info">
+                  <div class="items-infor">
+                    <div class="items-information items-name">
+                      {{ itemm.name }}
+                    </div>
+                    <div class="items-information items-icon">
+                      <i class="fa-solid fa-bed"></i>
+                      <i class="fa-solid fa-chair"></i>
+                      <i class="fa-solid fa-couch"></i>
+                    </div>
+                    <div class="items-information items-rating">
+                      Rating: {{ itemm.rating }}
+                      <i class="fa-solid fa-star"></i>
+                    </div>
+                    <div class="items-information items-price">
+                      $ {{ itemm.price }}/month
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
+            </router-link>
           </template>
         </vueper-slide>
       </vueper-slides>
     </div>
   </div>
-  <div class="list-container">
+
+  <div class="list-container" v-motion-fade-visible v-if="page === 'product'">
     <div class="list-items">
       <p>Most viewed furniture</p>
       <vueper-slides
@@ -146,40 +177,50 @@
       >
         <vueper-slide v-for="(vieww, i) in view" :key="i">
           <template #content>
-            <div class="items-container">
-              <div
-                class="items-content items-image"
-                :style="{ backgroundImage: `url(${vieww.image_link})` }"
-              >
-                <div class="discount">
-                  <span>{{ vieww.discount }}</span>
-                </div>
-              </div>
-              <div class="items-content items-info">
-                <div class="items-infor">
-                  <div class="items-information items-name">
-                    {{ vieww.name }}
-                  </div>
-                  <div class="items-information items-icon">
-                    <i class="fa-solid fa-bed"></i>
-                    <i class="fa-solid fa-chair"></i>
-                    <i class="fa-solid fa-couch"></i>
-                  </div>
-                  <div class="items-information items-rating">
-                    Rating: {{ vieww.rating }} <i class="fa-solid fa-star"></i>
-                  </div>
-                  <div class="items-information items-price">
-                    {{ vieww.price }}/month
+            <router-link
+              :to="{ name: 'ProductDetails', params: { id: vieww.id } }"
+              class="component product"
+            >
+              <div class="items-container">
+                <div
+                  class="items-content items-image"
+                  :style="{ backgroundImage: `url(${vieww.image_link})` }"
+                >
+                  <div class="discount">
+                    <span>{{ vieww.discount }}</span>
                   </div>
                 </div>
+                <div class="items-content items-info">
+                  <div class="items-infor">
+                    <div class="items-information items-name">
+                      {{ vieww.name }}
+                    </div>
+                    <div class="items-information items-icon">
+                      <i class="fa-solid fa-bed"></i>
+                      <i class="fa-solid fa-chair"></i>
+                      <i class="fa-solid fa-couch"></i>
+                    </div>
+                    <div class="items-information items-rating">
+                      Rating: {{ vieww.rating }}
+                      <i class="fa-solid fa-star"></i>
+                    </div>
+                    <div class="items-information items-price">
+                      $ {{ vieww.price }}/month
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
+            </router-link>
           </template>
         </vueper-slide>
       </vueper-slides>
     </div>
   </div>
-  <div class="list-container comment">
+  <div
+    class="list-container comment"
+    v-motion-fade-visible
+    v-if="page === 'product'"
+  >
     <div class="list-items">
       <span class="comment-span">What people are saying about us</span>
       <vueper-slides
@@ -217,6 +258,42 @@
       </vueper-slides>
     </div>
   </div>
+  <div v-if="page === 'cart'" class="cart">
+    <div class="cart_container">
+      <div class="cart_info">
+        <div class="info_side">
+          <div class="all_items">
+            <input type="checkbox" name="" id="" />
+            <span>All Products</span>
+          </div>
+          <span class="price_quo">Price quotaiton</span>
+          <span>Quantity</span>
+          <span>Price</span>
+          <span>Delete</span>
+        </div>
+      </div>
+      <div class="cart_items">
+        <div class="items_side" v-for="item in cart" :key="item.id">
+          <div class="choose_item">
+            <input type="checkbox" name="" id="" />
+            <div
+              class="item_image"
+              :style="{ backgroundImage: `url(${item.image_link})` }"
+            ></div>
+            <div class="item_name">{{ item.name }}</div>
+          </div>
+          <span class="item_quo"> $ {{ item.price }}</span>
+          <div class="item_quan">
+            <button class="minus" @click="decreaseQuantity(item)">-</button>
+            <span>{{ item.quantity }}</span>
+            <button class="plus" @click="increaseQuantity(item)">+</button>
+          </div>
+          <span class="item_price">$ {{ item.price }}</span>
+          <button @click="Delete(item)">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="information">
     <div class="information-container">
       <div class="infor-text1">
@@ -247,82 +324,88 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { computed, onBeforeMount, ref } from "vue";
 // @ is an alias to /src
 import { VueperSlides, VueperSlide } from "vueperslides";
 import "vueperslides/dist/vueperslides.css";
+import ProductDetails from "../views/products/ProductDetails.vue";
+
+import "firebase/compat/auth";
+import firebase from "firebase/compat/app";
+
 export default {
   name: "HomeView",
-  components: { VueperSlides, VueperSlide },
+  components: { VueperSlides, VueperSlide, ProductDetails },
 
   setup() {
+    const isView = ref(false);
+    const page = ref("product");
+    const navigate = (pages) => {
+      page.value = pages;
+      isView.value = !isView.value;
+    };
+    const cart = ref([]);
+    const isSearch = ref(false);
     const isLogin = ref(true);
     const handleLogin = () => {
       isLogin.value = false;
     };
-    //slide
-    // const slides = [
-    //   {
-    //     title: "El Teide Volcano, Spain",
-    //     content: "Photo by Max Rive",
-    //     // You can also provide a URL for the image.
-    //     image: require("@/assets/b3.jpg"),
-    //     link: "https://www.maxrivephotography.com/index/C0000rU1RKCHdqwI/G0000X57AtIzuRX0/I0000Gvr9HqdtyXk",
-    //   },
-    //   {
-    //     title: "El Teide Volcano, Spain",
-    //     content: "Photo by Max Rive",
-    //     // You can also provide a URL for the image.
-    //     image: require("@/assets/b3.jpg"),
-    //     link: "https://www.maxrivephotography.com/index/C0000rU1RKCHdqwI/G0000X57AtIzuRX0/I0000Gvr9HqdtyXk",
-    //   },
-    //   {
-    //     title: "El Teide Volcano, Spain",
-    //     content: "Photo by Max Rive",
-    //     // You can also provide a URL for the image.
-    //     image: require("@/assets/b3.jpg"),
-    //     link: "https://www.maxrivephotography.com/index/C0000rU1RKCHdqwI/G0000X57AtIzuRX0/I0000Gvr9HqdtyXk",
-    //   },
-    //   {
-    //     title: "El Teide Volcano, Spain",
-    //     content: "Photo by Max Rive",
-    //     // You can also provide a URL for the image.
-    //     image: require("@/assets/b3.jpg"),
-    //     link: "https://www.maxrivephotography.com/index/C0000rU1RKCHdqwI/G0000X57AtIzuRX0/I0000Gvr9HqdtyXk",
-    //   },
-    //   {
-    //     title: "El Teide Volcano, Spain",
-    //     content: "Photo by Max Rive",
-    //     // You can also provide a URL for the image.
-    //     image: require("@/assets/b3.jpg"),
-    //     link: "https://www.maxrivephotography.com/index/C0000rU1RKCHdqwI/G0000X57AtIzuRX0/I0000Gvr9HqdtyXk",
-    //   },
-    //   {
-    //     title: "El Teide Volcano, Spain",
-    //     content: "Photo by Max Rive",
-    //     // You can also provide a URL for the image.
-    //     image: require("@/assets/b3.jpg"),
-    //     link: "https://www.maxrivephotography.com/index/C0000rU1RKCHdqwI/G0000X57AtIzuRX0/I0000Gvr9HqdtyXk",
-    //   },
-    //   {
-    //     title: "El Teide Volcano, Spain",
-    //     content: "Photo by Max Rive",
-    //     // You can also provide a URL for the image.
-    //     image: require("@/assets/b3.jpg"),
-    //     link: "https://www.maxrivephotography.com/index/C0000rU1RKCHdqwI/G0000X57AtIzuRX0/I0000Gvr9HqdtyXk",
-    //   },
-    //   {
-    //     title: "El Teide Volcano, Spain",
-    //     content: "Photo by Max Rive",
-    //     // You can also provide a URL for the image.
-    //     image: require("@/assets/b3.jpg"),
-    //     link: "https://www.maxrivephotography.com/index/C0000rU1RKCHdqwI/G0000X57AtIzuRX0/I0000Gvr9HqdtyXk",
-    //   },
-    // ];
+
+    const names = ref("");
+    onBeforeMount(() => {
+      const user = firebase.auth().currentUser;
+      const savedCart = localStorage.getItem("cart");
+      if (savedCart) {
+        cart.value = JSON.parse(savedCart);
+      }
+      if (user) {
+        isLogin.value = false;
+        names.value = user.email.split("@")[0];
+      }
+    });
+
     const items = ref([]);
     const views = ref([]);
     const comments = ref([]);
+    const tests = ref([]);
     const error = ref(null);
+    const search = ref("");
+
+    const Logout = () => {
+      firebase
+        .auth()
+        .signOut()
+        .then(() => console.log("Sign out"))
+        .catch((err) => alert(err.message));
+    };
+
+    const loadd = async () => {
+      try {
+        let data = await fetch("http://localhost:3000/tests");
+        if (!data.ok) {
+          throw Error("no data available");
+        }
+        tests.value = await data.json();
+        console.log(tests.value);
+      } catch (err) {
+        error.value = err.message;
+        console.log(error.value);
+      }
+    };
+    const filteredItems = ref([]);
+    loadd();
+    const filtSearch = () => {
+      if (search.value) {
+        filteredItems.value = tests.value.filter(
+          (test) => test.tag.includes(search.value), // Add a comma here
+          (test) => test.name.includes(search.value), // Add a comma here
+
+          (isSearch.value = true)
+        );
+      } else {
+        isSearch.value = false;
+      }
+    };
     const load = async () => {
       try {
         let data = await fetch("http://localhost:3000/items");
@@ -365,13 +448,50 @@ export default {
     load();
     loadView();
     loadComment();
+    const Delete = (item) => {
+      const index = cart.value.findIndex((cartItem) => cartItem.id === item.id);
+      if (index !== -1) {
+        cart.value.splice(index, 1);
+        // Lưu lại giỏ hàng sau khi xóa vào LocalStorage (nếu muốn)
+        localStorage.setItem("cart", JSON.stringify(cart.value));
+      }
+    };
+    const increaseQuantity = (item) => {
+      item.quantity++;
+      updatePrice(item);
+    };
+
+    const decreaseQuantity = (item) => {
+      if (item.quantity > 1) {
+        item.quantity--;
+        updatePrice(item);
+      }
+    };
+
+    const updatePrice = (item) => {
+      item.price = item.unitPrice * item.quantity;
+    };
     return {
+      page,
+      navigate,
+      cart,
       isLogin,
       handleLogin,
       items,
       views,
       comments,
       error,
+      search,
+      filtSearch,
+      filteredItems,
+      isSearch,
+      Logout,
+      names,
+      isView,
+      Delete,
+      increaseQuantity,
+      decreaseQuantity,
+      updatePrice,
       // slides,
     };
   },
@@ -387,26 +507,25 @@ $text-color: rgb(144, 143, 143);
 $items-color: #474747;
 $content-color: #e8554e;
 $content-color2: #004b80;
+$font: "Lato";
 ///////////products
 
 body {
   padding: 0;
   margin: 0;
-  font-family: "Bricolage Grotesque", sans-serif;
-  font-family: "Cabin", sans-serif;
-  font-family: "Montserrat", sans-serif;
-  font-family: "Odibee Sans", cursive;
+
+  font-family: "Lato", sans-serif;
   letter-spacing: 0.5px;
 }
 nav {
   width: 100%;
   height: 80px;
   position: relative;
-  z-index: 1;
+  z-index: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 0px 1px 5px 1px rgb(118, 117, 117);
+  box-shadow: 0px 2px 5px 1px rgb(45, 44, 44);
 
   .container {
     width: 95%;
@@ -419,14 +538,18 @@ nav {
     .label {
       width: 8%;
       height: 60%;
-      font-size: 45px;
+      font-size: 42px;
       font-weight: bold;
+      position: relative;
+      top: -5px;
       @include center-item();
       .text1 {
         color: $content-color2;
+        text-decoration: none;
       }
       .text2 {
         color: $content-color;
+        text-decoration: none;
       }
     }
     .search {
@@ -437,14 +560,12 @@ nav {
       border: 1px solid $text-color;
       &::-webkit-input-placeholder {
         text-indent: 7px;
-        font-size: 16px;
+        font-size: 12px;
         color: $text-color;
-        font-family: "Bricolage Grotesque", sans-serif;
-        font-family: "Cabin", sans-serif;
-        font-family: "Montserrat", sans-serif;
-        font-family: "Odibee Sans", cursive;
+        font-family: $font;
       }
     }
+
     .nav-bar {
       width: 35%;
       height: 60%;
@@ -458,25 +579,37 @@ nav {
         color: black;
         @include center-item;
         text-decoration: none;
-        font-size: 20px;
+        font-size: 17px;
+        font-weight: bold;
+        cursor: pointer;
       }
       .router-link-active {
         background-color: rgba($text-color, 0.2);
         border-radius: 5px;
+        transition: all 0.4s ease-in-out;
       }
     }
-
+    .cart_length {
+      color: white;
+      font-size: 10px;
+      padding: 2px 4px;
+      background-color: #e8554e;
+      border-radius: 50%;
+      position: relative;
+      top: -18.5px;
+      left: -8px;
+    }
     .fa-shopping-cart {
-      font-size: 30px;
+      font-size: 25px;
       color: $text-color;
+      position: relative;
+      right: -0px;
       cursor: pointer;
     }
+
     .login {
-      font-family: "Bricolage Grotesque", sans-serif;
-      font-family: "Cabin", sans-serif;
-      font-family: "Montserrat", sans-serif;
-      font-family: "Odibee Sans", cursive;
-      font-size: 17px;
+      font-family: $font;
+      font-size: 15.5px;
       width: 10%;
       height: 55%;
       color: white;
@@ -485,9 +618,27 @@ nav {
       border: none;
       border-radius: 5px;
       cursor: pointer;
+
       .login-router {
         text-decoration: none;
         color: white;
+      }
+    }
+    .logout {
+      width: 30%;
+      height: 80%;
+    }
+    .log-out {
+      width: 20%;
+      height: 60%;
+
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      span {
+        color: $items-color;
+        font-weight: bold;
+        font-size: 18px;
       }
     }
   }
@@ -503,9 +654,42 @@ nav {
   position: relative;
   display: flex;
   align-items: center;
-  z-index: 0;
+  z-index: 1;
+  .search-container {
+    position: relative;
+    top: 58px;
+    left: 235px;
+    width: 340.462px;
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 2;
+    .search-contents {
+      width: 100%;
+      height: 100%;
+      background-color: white;
+    }
+    .search-content {
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      text-indent: 10px;
+      .search-link {
+        width: 100%;
+        height: 30%;
+        text-decoration: none;
+        color: $items-color;
+      }
+    }
+  }
   .introduce-text {
-    width: 340px;
+    width: 400px;
     height: 74%;
     background-color: white;
     border-radius: 5px;
@@ -519,8 +703,9 @@ nav {
       width: 35%;
       height: 14%;
       background-color: $content-color;
+      font-size: 14px;
       position: relative;
-      left: -110.5px;
+      left: -130px;
       border-top-left-radius: 5px;
       border-bottom-right-radius: 10px;
       @include center-item();
@@ -529,21 +714,21 @@ nav {
     .intro-text--2 {
       width: 80%;
       height: 67%;
-      font-size: 20px;
-      color: rgb(71, 70, 70);
+      font-size: 18px;
+      position: relative;
+      top: -8px;
+
+      color: #515151;
       @include center-item();
     }
     .intro-text--3 {
-      font-family: "Bricolage Grotesque", sans-serif;
-      font-family: "Cabin", sans-serif;
-      font-family: "Montserrat", sans-serif;
-      font-family: "Odibee Sans", cursive;
-      font-size: 17px;
+      font-family: $font;
+      font-size: 14px;
       width: 50%;
       height: 17%;
       position: relative;
       left: -61px;
-      top: -10px;
+      top: -20px;
       background: none;
       font-weight: bold;
       border: 3px solid $content-color2;
@@ -556,6 +741,8 @@ nav {
   width: 100%;
   height: 200px;
   border-bottom: 1px solid black;
+  position: relative;
+  z-index: 0;
   @include center-item();
   .service {
     width: 89%;
@@ -589,13 +776,143 @@ nav {
     }
     .service-item--text {
       width: 70%;
-      font-size: 19px;
+      font-size: 15px;
+      font-weight: bold;
       text-align: center;
-      color: $text-color;
+      color: $items-color;
     }
   }
 }
+.viewproduct {
+  font-size: 20px;
+  cursor: pointer;
+  position: relative;
+  top: 30.212px;
+  left: 35.2px;
+  z-index: 4;
+  color: #2596be;
+}
+.cart {
+  width: 100%;
+  height: 1500px;
+  background-color: #f3f3f3;
+  position: relative;
+  top: 50px;
+  @include center-item();
+  .cart_container {
+    width: 80%;
+    height: 90%;
 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    .cart_info {
+      width: 100%;
+      height: 60px;
+      background-color: #fff;
+      @include center-item();
+      .info_side {
+        width: 90%;
+        height: 80%;
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: $items-color;
+        font-weight: bold;
+        .all_items {
+          width: 20%;
+          input[type="checkbox"] {
+            transform: scale(1.5);
+            margin-right: 15px;
+          }
+        }
+      }
+    }
+    .cart_items {
+      width: 100%;
+      height: 93.2%;
+      background-color: #f3f3f3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      .items_side {
+        width: 90%;
+        height: 130.12px;
+        box-shadow: 2px 2px 4px 0px grey;
+        padding: 0px 60px;
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: white;
+        .choose_item {
+          width: 320px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+
+          input[type="checkbox"] {
+            transform: scale(1.5);
+          }
+          .item_image {
+            width: 100px;
+            height: 100px;
+            background-size: cover;
+            background-position: center;
+          }
+          .item_name {
+            width: 170px;
+          }
+        }
+        .item_quo {
+          position: relative;
+          left: -75px;
+        }
+        .item_quan {
+          position: relative;
+          left: -17px;
+          .minus {
+            width: 20px;
+            height: 20px;
+            position: relative;
+            left: 20px;
+          }
+          span {
+            position: relative;
+            left: 30px;
+          }
+          .plus {
+            width: 20px;
+            height: 20px;
+            position: relative;
+            left: 40px;
+          }
+        }
+        .item_price {
+          position: relative;
+          left: 30px;
+          color: #e8554e;
+        }
+        button {
+          border: none;
+
+          width: 80px;
+          height: 30px;
+          border-radius: 5px;
+          background-color: #e8554e;
+          cursor: pointer;
+          font-weight: bold;
+          font-family: $font;
+          color: white;
+          position: relative;
+          left: 15px;
+        }
+      }
+    }
+  }
+}
 .list-container {
   width: 100%;
   height: 480px;
@@ -611,7 +928,8 @@ nav {
       font-weight: bolder;
       font-size: 35px;
       position: relative;
-      left: -545px;
+      left: -492px;
+      color: $items-color;
     }
     .vueperslides {
       width: 100%;
@@ -689,13 +1007,18 @@ nav {
               align-items: center;
             }
             .items-name {
-              font-size: 20px;
+              font-size: 17px;
               color: $items-color;
+              font-weight: bold;
             }
             .items-icon {
-              font-size: 22.8px;
+              font-size: 18px;
               color: $text-color;
-              width: 50%;
+              position: relative;
+              font-weight: bold;
+              left: 2px;
+              top: 5px;
+              width: 40%;
               display: flex;
               align-items: center;
               justify-content: space-between;
@@ -705,8 +1028,8 @@ nav {
               display: flex;
               align-items: center;
               justify-content: flex-start;
-              width: 40%;
-              font-size: 18px;
+              width: 60%;
+              font-size: 16px;
               i {
                 margin-left: 5px;
                 color: $content-color;
@@ -716,6 +1039,10 @@ nav {
             .items-price {
               color: $items-color;
               font-size: 16px;
+              font-weight: bold;
+              position: relative;
+              left: 2px;
+              top: -5px;
             }
           }
           .items-image {
@@ -725,11 +1052,14 @@ nav {
             .discount {
               display: flex;
               justify-content: flex-start;
+
               span {
                 padding: 5px 15px;
                 background-color: #f9ab4c;
                 clip-path: polygon(82% 0, 100% 50%, 82% 100%, 0 100%, 0 0);
-
+                font-size: 13.2px;
+                font-weight: bold;
+                color: $items-color;
                 position: relative;
                 top: 20px;
               }
@@ -780,7 +1110,7 @@ nav {
       color: $items-color;
 
       @include center-item();
-      font-size: 22px;
+      font-size: 17px;
       text-align: center;
     }
     .info-comment {
@@ -790,9 +1120,10 @@ nav {
 
       top: -10px;
       flex-direction: column;
-      font-size: 17.6px;
+      font-size: 15px;
       .info-com1 {
         color: $content-color;
+        font-size: 12px;
       }
     }
   }
@@ -813,16 +1144,14 @@ nav {
     .infor-text1 {
       width: 30%;
       height: 90%;
-      font-size: 17.1px;
+      font-size: 15px;
       @include center-item();
       justify-content: flex-start;
-      letter-spacing: 1.2px;
     }
     .infor-text2 {
-      width: 40%;
+      width: 45%;
       height: 90%;
-      font-size: 17.1px;
-      letter-spacing: 1.2px;
+      font-size: 15px;
       display: flex;
       align-items: center;
       justify-content: space-around;
@@ -840,7 +1169,7 @@ nav {
     .infor-text3 {
       width: 15%;
       height: 90%;
-      font-size: 17.1px;
+      font-size: 15px;
       display: flex;
       align-items: center;
       justify-content: space-around;
@@ -884,6 +1213,9 @@ nav {
   height: 60px;
   @include center-item();
   color: $text-color;
-  font-size: 14px;
+  font-size: 12px;
+}
+.product {
+  text-decoration: none;
 }
 </style>
