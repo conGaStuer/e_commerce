@@ -309,7 +309,11 @@ export default {
     const page = ref("product");
     const navigate = (pages) => {
       page.value = pages;
-      isView.value = !isView.value;
+      if (pages === "cart") {
+        isView.value = !isView.value;
+      } else {
+        isView.value = false;
+      }
     };
     const cart = ref([]);
 
@@ -475,6 +479,14 @@ $font: "Lato";
 .component {
   color: rgb(14, 173, 173);
   text-decoration: none;
+}
+.viewproduct {
+  width: 950px;
+  font-size: 20px;
+  cursor: pointer;
+  position: relative;
+  top: 20px;
+  left: 35.2px;
 }
 .products {
   width: 100%;

@@ -1,19 +1,20 @@
-<template>
-  <div></div>
-</template>
+<template></template>
 
 <script>
-import { ref } from "vue";
-import { useRoute } from "vue-router";
-
+import axios from "axios";
 export default {
-  props: {
-    cart: {
-      type: Object,
-    },
-  },
-  setup(props) {
-    console.log(props);
+  mounted() {
+    // axios
+    //   .post("http://localhost:3000/mona", {
+    //     name: "hello",
+    //     id: 10,
+    //   })
+    //   .then((response) => console.log(response));
+    axios
+      .get("http://localhost:3000/mona")
+      .then((response) => console.log(response));
   },
 };
 </script>
+
+<style></style>

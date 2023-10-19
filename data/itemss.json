@@ -240,6 +240,74 @@
       ],
       "enabled": true,
       "responseMode": null
+    },
+    {
+      "uuid": "5472921f-4722-4340-9447-6c42231a4f27",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "axios",
+      "responses": [
+        {
+          "uuid": "815b1118-efba-4c09-b9ea-47cc1749701d",
+          "body": "[\r\n  {\r\n    \"id\": 1,\r\n    \"name\": \"1 BHK Royal Package for Bachelors\",\r\n    \"image_link\": \"https://img.freepik.com/free-photo/gray-sofa-brown-living-room-with-copy-space_43614-954.jpg?w=900&t=st=1695216791~exp=1695217391~hmac=b498a4acec3c6c910ec306ff56afc5cb685daf332b6b1c98fa7f764fcecaf723\",\r\n    \"rating\": 2132,\r\n    \"price\": 564,\r\n    \"discount\": \"20% OFF\",\r\n    \"tag\": \"package\",\r\n    \"quantity\": 1,\r\n    \"unitPrice\": 564\r\n  },\r\n  {\r\n    \"id\": 2,\r\n    \"name\": \"1 BHK Royal Package for Partners\",\r\n    \"image_link\": \"https://img.freepik.com/free-photo/picture-frame-wall-with-scandinavian-home-interior_53876-139779.jpg?w=996&t=st=1695216905~exp=1695217505~hmac=93fcaa1ca4e8c915de3afd301bc7c3bbbf1a97ea0f4f6c578f195d6c58cdce55\",\r\n    \"rating\": 1152,\r\n    \"price\": 5111,\r\n    \"discount\": \"20% OFF\",\r\n    \"tag\": \"package\",\r\n    \"quantity\": 1,\r\n    \"unitPrice\": 5111\r\n  },\r\n  {\r\n    \"id\": 3,\r\n    \"name\": \"1 BHK Royal Package for Family\",\r\n    \"image_link\": \"https://img.freepik.com/free-photo/mid-century-modern-living-room-interior-design-with-monstera-tree_53876-129803.jpg?w=996&t=st=1695217528~exp=1695218128~hmac=eaf10f9a817c0b4f49144b2a01b66e10c228e499e48772885125943f879af64e\",\r\n    \"rating\": 315,\r\n    \"price\": 1615,\r\n    \"discount\": \"30% OFF\",\r\n    \"tag\": \"package\",\r\n    \"quantity\": 1,\r\n    \"unitPrice\": 1615\r\n  },\r\n  {\r\n    \"id\": 4,\r\n    \"name\": \"Minimal Chair\",\r\n    \"image_link\": \"https://img.freepik.com/free-photo/green-sofa-white-living-room-with-free-space_43614-834.jpg?w=900&t=st=1695217558~exp=1695218158~hmac=6b8e8c5035617eacdd8655ac34a0d53f560e503b8058f106b06cf4e1eefe303c\",\r\n    \"rating\": 157,\r\n    \"price\": 851,\r\n    \"discount\": \"20% OFF\",\r\n    \"tag\": \"chair\",\r\n    \"quantity\": 1,\r\n    \"unitPrice\": 851\r\n  },\r\n  {\r\n    \"id\": 5,\r\n    \"name\": \"1 BHK Royal Package for Family\",\r\n    \"image_link\": \"https://img.freepik.com/free-photo/stylish-scandinavian-living-room-with-design-mint-sofa-furnitures-mock-up-poster-map-plants-eleg_1258-152155.jpg?w=1380&t=st=1695217600~exp=1695218200~hmac=82c630ab2515c3afb39d8ad650f209b371e0ff446a784f06f45c2b8adeda2540\",\r\n    \"rating\": 644,\r\n    \"price\": 9111,\r\n    \"discount\": \"10% OFF\",\r\n    \"tag\": \"package\",\r\n    \"quantity\": 1,\r\n    \"unitPrice\": 9111\r\n  },\r\n  {\r\n    \"id\": 6,\r\n    \"name\": \"2 Seater Sofa\",\r\n    \"image_link\": \"https://img.freepik.com/free-photo/gray-sofa-white-living-room-interior-with-copy-space-3d-rendering_43614-802.jpg?w=1060&t=st=1695217641~exp=1695218241~hmac=e38892dc8d83b861caf53ff7103dade6c12d03891b2da3f3302a5ebfde1d639a\",\r\n    \"rating\": 665,\r\n    \"price\": 561,\r\n    \"discount\": \"20% OFF\",\r\n    \"tag\": \"sofa\",\r\n    \"quantity\": 1,\r\n    \"unitPrice\": 561\r\n  },\r\n  {\r\n    \"id\": 7,\r\n    \"name\": \"Velvet Armchair\",\r\n    \"image_link\": \"https://img.freepik.com/free-photo/picture-frame-by-velvet-armchair_53876-132788.jpg?w=360&t=st=1695217691~exp=1695218291~hmac=cea71c1c1db963f3752e36dd1fa50b3d7f382a76a6981d9d72043274f3e57bad\",\r\n    \"rating\": 1152,\r\n    \"price\": 313,\r\n    \"discount\": \"40% OFF\",\r\n    \"tag\": \"chair\",\r\n    \"quantity\": 1,\r\n    \"unitPrice\": 313\r\n  },\r\n  {\r\n    \"id\": 8,\r\n    \"name\": \"1 BHK Royal Package for Partners\",\r\n    \"image_link\": \"https://img.freepik.com/free-photo/living-room-mid-century-style-with-warm-colors-ai-generative_123827-23931.jpg?w=996&t=st=1695217743~exp=1695218343~hmac=b3f6606ab513a878181322b0c6155fbc12c20c86428bfddee9209a3086940080\",\r\n    \"rating\": 622,\r\n    \"price\": 6111,\r\n    \"discount\": \"20% OFF\",\r\n    \"tag\": \"package\",\r\n    \"quantity\": 1,\r\n    \"unitPrice\": 6111\r\n  }\r\n]\r\n",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id"
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
+    },
+    {
+      "uuid": "c43cfe85-c7c1-4992-bdaf-8c59f31b83ac",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "mona",
+      "responses": [
+        {
+          "uuid": "91916b9a-3cdd-485e-920d-041b3a6a3d00",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id"
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
     }
   ],
   "rootChildren": [
@@ -270,6 +338,14 @@
     {
       "type": "route",
       "uuid": "4f11aafc-af32-4fae-92c4-9ff0b2bc4977"
+    },
+    {
+      "type": "route",
+      "uuid": "5472921f-4722-4340-9447-6c42231a4f27"
+    },
+    {
+      "type": "route",
+      "uuid": "c43cfe85-c7c1-4992-bdaf-8c59f31b83ac"
     }
   ],
   "proxyMode": false,
@@ -303,5 +379,13 @@
       "value": ""
     }
   ],
-  "data": []
+  "data": [
+    {
+      "uuid": "f5ebf06e-09c0-43fe-9ab5-c81ceb29138d",
+      "id": "3rnf",
+      "name": "New data",
+      "documentation": "",
+      "value": ""
+    }
+  ]
 }

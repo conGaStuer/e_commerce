@@ -76,6 +76,21 @@
               :key="i"
               :image="slide.image"
             >
+              <template #content>
+                <div
+                  v-for="test in tests.filter(
+                    (test) => test.id == `${$route.params.id}`
+                  )"
+                  :key="test.id"
+                  v-if="isDisplay"
+                  @mouseover="noneDisplay"
+                >
+                  <div
+                    :style="{ backgroundImage: `url(${test.image_link})` }"
+                    class="test"
+                  ></div>
+                </div>
+              </template>
             </vueper-slide>
           </vueper-slides>
         </div>
@@ -403,7 +418,27 @@ export default {
         isAdd.value = false;
       }, 3000);
     };
-
+    const tests = ref([]);
+    const loads = async () => {
+      try {
+        let data = await fetch("http://localhost:3000/tests");
+        if (!data.ok) {
+          throw Error("no data available");
+        }
+        tests.value = await data.json();
+        console.log(tests.value);
+      } catch (err) {
+        error.value = err.message;
+        console.log(error.value);
+      }
+    };
+    loads();
+    const isDisplay = ref(true);
+    const noneDisplay = () => {
+      setTimeout(() => {
+        isDisplay.value = false;
+      }, 1500);
+    };
     const error = ref(null);
     const Load = async () => {
       try {
@@ -442,6 +477,10 @@ export default {
       item.price = item.unitPrice * item.quantity;
     };
     return {
+      isDisplay,
+      noneDisplay,
+      tests,
+      loads,
       page,
       navigate,
       items,
@@ -566,6 +605,14 @@ $font: "Lato";
         width: 100%;
         height: 200px;
         cursor: pointer;
+        .test {
+          width: 744.5px;
+          height: 400px;
+          background-position: center;
+          background-size: cover;
+          position: relative;
+          z-index: 0;
+        }
       }
       .list-2 {
         width: 100%;
