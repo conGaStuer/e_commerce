@@ -56,7 +56,12 @@
           <router-link
             :to="{ name: 'ProductDetails', params: { id: test.id } }"
             class="search-link"
-            >{{ test.name }}
+          >
+            {{ test.name }}
+            <div
+              :style="{ backgroundImage: `url(${test.image_link})` }"
+              class="proimage"
+            ></div>
           </router-link>
         </div>
       </div>
@@ -345,7 +350,7 @@ export default {
       isView.value = !isView.value;
     };
     const cart = ref([]);
-    const isSearch = ref(false);
+    const isSearch = ref(true);
     const isLogin = ref(true);
     const handleLogin = () => {
       isLogin.value = false;
@@ -1416,7 +1421,7 @@ nav {
   .search-container {
     position: relative;
     top: 58px;
-    left: 235px;
+    left: 190px;
     width: 340.462px;
     height: 500px;
     display: flex;
@@ -1424,6 +1429,7 @@ nav {
     justify-content: space-between;
     align-items: center;
     z-index: 2;
+
     .search-contents {
       width: 100%;
       height: 100%;
@@ -1443,6 +1449,12 @@ nav {
         height: 30%;
         text-decoration: none;
         color: $items-color;
+        .proimage {
+          width: 70px;
+          height: 50px;
+          background-position: center;
+          background-size: cover;
+        }
       }
     }
   }

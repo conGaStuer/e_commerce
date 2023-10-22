@@ -16,10 +16,10 @@ export default {
     onBeforeMount(() => {
       router.push("/");
       firebase.auth().onAuthStateChanged((user) => {
-        if (!user) {
-          router.replace("/login");
-        } else if (route.path == "/login" || route.path == "/register") {
-          router.replace("/");
+        if (user) {
+          if (route.path == "/login" || route.path == "/register") {
+            router.replace("/");
+          }
         }
       });
     });

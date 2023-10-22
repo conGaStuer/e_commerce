@@ -54,6 +54,7 @@
   <div class="component viewproduct" @click="navigate('product')" v-if="isView">
     <i class="fa-solid fa-angle-left"></i> View Product Details
   </div>
+
   <div class="product-info sr-reveal" v-if="page === 'product'">
     <div class="product-info__container">
       <div class="section-1">
@@ -903,20 +904,7 @@ export default {
         quantity: 1,
       },
     ]);
-    const loads = async () => {
-      try {
-        let data = await fetch("http://localhost:3000/tests");
-        if (!data.ok) {
-          throw Error("no data available");
-        }
-        tests.value = await data.json();
-        console.log(tests.value);
-      } catch (err) {
-        error.value = err.message;
-        console.log(error.value);
-      }
-    };
-    loads();
+
     const isDisplay = ref(true);
     const noneDisplay = () => {
       setTimeout(() => {
@@ -924,19 +912,7 @@ export default {
       }, 1500);
     };
     const error = ref(null);
-    const Load = async () => {
-      try {
-        let data = await fetch("http://localhost:3000/items");
-        if (!data.ok) {
-          throw Error("no data available");
-        }
-        items.value = await data.json();
-        console.log(items.value);
-      } catch (err) {
-        console.log(error.value);
-      }
-    };
-    Load();
+
     const Delete = (item) => {
       const index = cart.value.findIndex((cartItem) => cartItem.id === item.id);
       if (index !== -1) {
@@ -964,7 +940,7 @@ export default {
       isDisplay,
       noneDisplay,
       tests,
-      loads,
+
       page,
       navigate,
       items,
